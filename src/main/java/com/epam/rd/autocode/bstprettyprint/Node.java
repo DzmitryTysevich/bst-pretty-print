@@ -1,11 +1,8 @@
 package com.epam.rd.autocode.bstprettyprint;
 
-import java.util.Collections;
-import java.util.List;
-
 public class Node {
     private final Integer element;
-    private final List<Integer> elements;
+    private Integer parent;
     private Node left, right;
     private final String turnUpDown = "┤";
     private final String verticalLine = "│";
@@ -16,7 +13,6 @@ public class Node {
     private final String space = " ";
 
     Node(int value) {
-        this.elements = Collections.singletonList(value);
         this.element = value;
         this.right = null;
         this.left = null;
@@ -36,10 +32,12 @@ public class Node {
 
     public void setLeft(Node left) {
         this.left = left;
+        left.parent = element;
     }
 
     public void setRight(Node right) {
         this.right = right;
+        right.parent = element;
     }
 
     private String printNodeValue() {
@@ -58,18 +56,15 @@ public class Node {
 
     private String printTree(boolean isRight, String indent) {
         StringBuilder stringBuilder = new StringBuilder();
-        String spaces = addDigitSpaces(element);
+        String spaces = addDigitSpaces(parent);
         if (right != null)
             stringBuilder.append(right.printTree(true, indent + spaces + (isRight ? space : verticalLine)));
         stringBuilder.append(indent);
-
-        if (isRight) {
-            stringBuilder.append(spaces);
+        stringBuilder.append(spaces);
+        if (isRight)
             stringBuilder.append(turnLeftUp);
-        } else {
-            stringBuilder.append(spaces);
+        else
             stringBuilder.append(turnLeftDown);
-        }
         stringBuilder.append(printNodeValue());
         if (left != null)
             stringBuilder.append(left.printTree(false, indent + spaces + (isRight ? verticalLine : space)));

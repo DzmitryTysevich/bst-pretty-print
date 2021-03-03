@@ -9,16 +9,14 @@ public class PrintableTreeImpl implements PrintableTree {
     }
 
     private Node addRecursive(Node current, int element) {
-        if (current == null) {
+        if (current == null)
             return new Node(element);
-        }
         if (element > current.getElement()) {
             current.setLeft(addRecursive(current.getLeft(), element));
-        } else if (element < current.getElement()) {
+        } else if (element < current.getElement())
             current.setRight(addRecursive(current.getRight(), element));
-        } else {
+        else
             return current;
-        }
         return current;
     }
 
